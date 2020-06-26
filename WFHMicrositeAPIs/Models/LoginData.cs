@@ -10,5 +10,6 @@ namespace WFHMicrositeAPIs.Models
         public string EmailAddress { get; set; }
         public string PIN { get; set; }
         public int? UserId { get; set; }
+        public int ProductId { get; set; }
     }
 }

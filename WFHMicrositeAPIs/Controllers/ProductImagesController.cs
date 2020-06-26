@@ -41,11 +41,11 @@ namespace WFHMicrositeAPIs.Controllers
             return productImage;
         }
 
-        // GET: api/ProductImages/5/1/2
-        [HttpGet("{id}/{option1}/{option2}")]
-        public async Task<ActionResult<ProductImage>> GetProductImage(int id, int option1, int option2)
+        // GET: api/ProductImages/5/1/2/3
+        [HttpGet("{id}/{option1}/{option2}/{option3}")]
+        public async Task<ActionResult<ProductImage>> GetProductImage(int id, int option1, int option2, int option3)
         {
-            var productImage = await _context.ProductImage.Where(x => x.ProductId == id && x.ProductOption1Id == option1 && x.ProductOption2Id == option2).FirstOrDefaultAsync();
+            var productImage = await _context.ProductImage.Where(x => x.ProductId == id && x.ProductOption1Id == option1 && x.ProductOption2Id == option2 && x.ProductOption3Id == option3).FirstOrDefaultAsync();
 
             if (productImage == null)
             {

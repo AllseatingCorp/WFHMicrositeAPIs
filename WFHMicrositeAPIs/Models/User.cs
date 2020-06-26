@@ -18,10 +18,12 @@ namespace WFHMicrositeAPIs.Models
         public string ProvinceState { get; set; }
         public string PostalZip { get; set; }
         public string Country { get; set; }
+        public string SpecialInstructions { get; set; }
         public bool Commercial { get; set; }
         public DateTime? Emailed { get; set; }
         public DateTime? Completed { get; set; }
         public DateTime? InProduction { get; set; }
         public DateTime? Shipped { get; set; }
+        public string TrackingNumber { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace MicrositeAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<LoginData>> LoginUser(LoginData data)
         {
-            var user = await _context.User.Where(x => x.EmailAddress == data.EmailAddress && x.Pin == data.PIN).FirstOrDefaultAsync();
+            var user = await _context.User.Where(x => x.ProductId == data.ProductId && x.EmailAddress == data.EmailAddress && x.Pin == data.PIN).FirstOrDefaultAsync();
             if (user == null)
             {
                 return NotFound();
