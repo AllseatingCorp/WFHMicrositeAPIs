@@ -116,7 +116,7 @@ namespace WFHMicrositeAPIs.Models
 
                 entity.Property(e => e.EmailAddress)
                     .IsRequired()
-                    .HasMaxLength(50);
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Emailed).HasColumnType("datetime");
 
