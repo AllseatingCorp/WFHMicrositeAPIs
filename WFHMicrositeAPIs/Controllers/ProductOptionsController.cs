@@ -24,14 +24,14 @@ namespace WFHMicrositeAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductOption>>> GetProductOption()
         {
-            return await _context.ProductOption.ToListAsync();
+            return await _context.ProductOptions.ToListAsync();
         }
 
         // GET: api/ProductOptions/5
         [HttpGet("{id}/{type}")]
         public async Task<ActionResult<IEnumerable<ProductOption>>> GetProductOption(int id, string type)
         {
-            var productOptions = await _context.ProductOption.Where(x => x.ProductId == id && x.Type == type).ToListAsync();
+            var productOptions = await _context.ProductOptions.Where(x => x.ProductId == id && x.Type == type).ToListAsync();
 
             if (productOptions == null)
             {
@@ -79,7 +79,7 @@ namespace WFHMicrositeAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductOption>> PostProductOption(ProductOption productOption)
         {
-            _context.ProductOption.Add(productOption);
+            _context.ProductOptions.Add(productOption);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetProductOption", new { id = productOption.ProductOptionId }, productOption);
@@ -89,13 +89,13 @@ namespace WFHMicrositeAPIs.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<ProductOption>> DeleteProductOption(int id)
         {
-            var productOption = await _context.ProductOption.FindAsync(id);
+            var productOption = await _context.ProductOptions.FindAsync(id);
             if (productOption == null)
             {
                 return NotFound();
             }
 
-            _context.ProductOption.Remove(productOption);
+            _context.ProductOptions.Remove(productOption);
             await _context.SaveChangesAsync();
 
             return productOption;
@@ -103,7 +103,7 @@ namespace WFHMicrositeAPIs.Controllers
 
         private bool ProductOptionExists(int id)
         {
-            return _context.ProductOption.Any(e => e.ProductOptionId == id);
+            return _context.ProductOptions.Any(e => e.ProductOptionId == id);
         }
     }
 }

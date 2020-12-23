@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace WFHMicrositeAPIs.Models
 {
     public partial class ProductOption
@@ -13,6 +15,6 @@ namespace WFHMicrositeAPIs.Models
         public byte[] Image { get; set; }
         public bool Default { get; set; }
         public string StockCode { get; set; }
-        public bool Disabled { get; set; }
+        public bool? Disabled { get; set; }
     }
 }

@@ -24,14 +24,14 @@ namespace MicrositeAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserSelection>>> GetUserSelection()
         {
-            return await _context.UserSelection.ToListAsync();
+            return await _context.UserSelections.ToListAsync();
         }
 
         // GET: api/UserSelections/5
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<UserSelection>>> GetUserSelection(int id)
         {
-            var userSelections = await _context.UserSelection.Where(x => x.UserId == id).ToListAsync();
+            var userSelections = await _context.UserSelections.Where(x => x.UserId == id).ToListAsync();
 
             if (userSelections.Count == 0)
             {
@@ -79,7 +79,7 @@ namespace MicrositeAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<UserSelection>> PostUserSelection(UserSelection userSelection)
         {
-            _context.UserSelection.Add(userSelection);
+            _context.UserSelections.Add(userSelection);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUserSelection", new { id = userSelection.UserSelectionId });
@@ -89,13 +89,13 @@ namespace MicrositeAPIs.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUserSelection(int id)
         {
-            var userSelections = await _context.UserSelection.Where(x => x.UserId == id).ToListAsync();
+            var userSelections = await _context.UserSelections.Where(x => x.UserId == id).ToListAsync();
             if (userSelections.Count == 0)
             {
                 return NotFound();
             }
 
-            _context.UserSelection.RemoveRange(userSelections);
+            _context.UserSelections.RemoveRange(userSelections);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -103,7 +103,7 @@ namespace MicrositeAPIs.Controllers
 
         private bool UserSelectionExists(int id)
         {
-            return _context.UserSelection.Any(e => e.UserSelectionId == id);
+            return _context.UserSelections.Any(e => e.UserSelectionId == id);
         }
     }
 }

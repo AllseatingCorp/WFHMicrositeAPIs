@@ -24,14 +24,14 @@ namespace WFHMicrositeAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductImage>>> GetProductImage()
         {
-            return await _context.ProductImage.ToListAsync();
+            return await _context.ProductImages.ToListAsync();
         }
 
         // GET: api/ProductImages/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductImage>> GetProductImage(int id)
         {
-            var productImage = await _context.ProductImage.FindAsync(id);
+            var productImage = await _context.ProductImages.FindAsync(id);
 
             if (productImage == null)
             {
@@ -45,7 +45,7 @@ namespace WFHMicrositeAPIs.Controllers
         [HttpGet("{id}/{option1}/{option2}/{option3}")]
         public async Task<ActionResult<ProductImage>> GetProductImage(int id, int option1, int option2, int option3)
         {
-            var productImage = await _context.ProductImage.Where(x => x.ProductId == id && x.ProductOption1Id == option1 && x.ProductOption2Id == option2 && x.ProductOption3Id == option3).FirstOrDefaultAsync();
+            var productImage = await _context.ProductImages.Where(x => x.ProductId == id && x.ProductOption1Id == option1 && x.ProductOption2Id == option2 && x.ProductOption3Id == option3).FirstOrDefaultAsync();
 
             if (productImage == null)
             {
@@ -93,7 +93,7 @@ namespace WFHMicrositeAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductImage>> PostProductImage(ProductImage productImage)
         {
-            _context.ProductImage.Add(productImage);
+            _context.ProductImages.Add(productImage);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetProductImage", new { id = productImage.ProductImageId }, productImage);
@@ -103,13 +103,13 @@ namespace WFHMicrositeAPIs.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<ProductImage>> DeleteProductImage(int id)
         {
-            var productImage = await _context.ProductImage.FindAsync(id);
+            var productImage = await _context.ProductImages.FindAsync(id);
             if (productImage == null)
             {
                 return NotFound();
             }
 
-            _context.ProductImage.Remove(productImage);
+            _context.ProductImages.Remove(productImage);
             await _context.SaveChangesAsync();
 
             return productImage;
@@ -117,7 +117,7 @@ namespace WFHMicrositeAPIs.Controllers
 
         private bool ProductImageExists(int id)
         {
-            return _context.ProductImage.Any(e => e.ProductImageId == id);
+            return _context.ProductImages.Any(e => e.ProductImageId == id);
         }
     }
 }

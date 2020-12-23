@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace WFHMicrositeAPIs.Models
 {
     public partial class Product
@@ -10,6 +12,7 @@ namespace WFHMicrositeAPIs.Models
         public string Name { get; set; }
         public string Ponumber { get; set; }
         public string Chair { get; set; }
+        public byte[] Image { get; set; }
         public string Language { get; set; }
         public string LogoFile { get; set; }
         public byte[] LogoImage { get; set; }
@@ -21,5 +24,7 @@ namespace WFHMicrositeAPIs.Models
         public string SitFitGuide { get; set; }
         public bool VerifyOnly { get; set; }
         public bool Completed { get; set; }
+        public string Shipper { get; set; }
+        public string Config { get; set; }
     }
 }

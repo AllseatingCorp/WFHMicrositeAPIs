@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
+#nullable disable
+
 namespace WFHMicrositeAPIs.Models
 {
     public partial class WFHMicrositeContext : DbContext
@@ -15,37 +17,45 @@ namespace WFHMicrositeAPIs.Models
         {
         }
 
-        public virtual DbSet<Printer> Printer { get; set; }
-        public virtual DbSet<Product> Product { get; set; }
-        public virtual DbSet<ProductImage> ProductImage { get; set; }
-        public virtual DbSet<ProductOption> ProductOption { get; set; }
-        public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<UserLog> UserLog { get; set; }
-        public virtual DbSet<UserNote> UserNote { get; set; }
-        public virtual DbSet<UserSelection> UserSelection { get; set; }
+        public virtual DbSet<MasterPostalZipP2> MasterPostalZipP2s { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ProductImage> ProductImages { get; set; }
+        public virtual DbSet<ProductOption> ProductOptions { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserLog> UserLogs { get; set; }
+        public virtual DbSet<UserNote> UserNotes { get; set; }
+        public virtual DbSet<UserSelection> UserSelections { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Printer>(entity =>
+            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<MasterPostalZipP2>(entity =>
             {
                 entity.HasNoKey();
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.ToTable("MasterPostalZipP2");
 
-                entity.Property(e => e.PrinterId)
-                    .HasColumnName("PrinterID")
-                    .ValueGeneratedOnAdd();
+                entity.Property(e => e.EmailAddress)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PostalCode)
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Product>(entity =>
             {
+                entity.ToTable("Product");
+
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
                 entity.Property(e => e.Chair)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.Property(e => e.Config).HasMaxLength(100);
 
                 entity.Property(e => e.DealerCode)
                     .IsRequired()
@@ -64,8 +74,10 @@ namespace WFHMicrositeAPIs.Models
                 entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.Property(e => e.Ponumber)
-                    .HasColumnName("PONumber")
-                    .HasMaxLength(30);
+                    .HasMaxLength(30)
+                    .HasColumnName("PONumber");
+
+                entity.Property(e => e.Shipper).HasMaxLength(10);
 
                 entity.Property(e => e.SitFitGuide).HasMaxLength(50);
 
@@ -76,11 +88,15 @@ namespace WFHMicrositeAPIs.Models
 
             modelBuilder.Entity<ProductImage>(entity =>
             {
+                entity.ToTable("ProductImage");
+
                 entity.Property(e => e.FileName).HasMaxLength(100);
             });
 
             modelBuilder.Entity<ProductOption>(entity =>
             {
+                entity.ToTable("ProductOption");
+
                 entity.Property(e => e.ProductOptionId).HasColumnName("ProductOptionID");
 
                 entity.Property(e => e.FileName).HasMaxLength(100);
@@ -100,6 +116,8 @@ namespace WFHMicrositeAPIs.Models
 
             modelBuilder.Entity<User>(entity =>
             {
+                entity.ToTable("User");
+
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
                 entity.Property(e => e.Address1).HasMaxLength(100);
@@ -129,8 +147,8 @@ namespace WFHMicrositeAPIs.Models
                 entity.Property(e => e.PhoneNumber).HasMaxLength(20);
 
                 entity.Property(e => e.Pin)
-                    .HasColumnName("PIN")
-                    .HasMaxLength(10);
+                    .HasMaxLength(10)
+                    .HasColumnName("PIN");
 
                 entity.Property(e => e.PostalZip).HasMaxLength(15);
 
@@ -147,6 +165,8 @@ namespace WFHMicrositeAPIs.Models
 
             modelBuilder.Entity<UserLog>(entity =>
             {
+                entity.ToTable("UserLog");
+
                 entity.Property(e => e.UserLogId).HasColumnName("UserLogID");
 
                 entity.Property(e => e.Details)
@@ -164,12 +184,14 @@ namespace WFHMicrositeAPIs.Models
 
             modelBuilder.Entity<UserNote>(entity =>
             {
+                entity.ToTable("UserNote");
+
                 entity.Property(e => e.UserNoteId).HasColumnName("UserNoteID");
 
                 entity.Property(e => e.Csuser)
                     .IsRequired()
-                    .HasColumnName("CSUser")
-                    .HasMaxLength(50);
+                    .HasMaxLength(50)
+                    .HasColumnName("CSUser");
 
                 entity.Property(e => e.Date).HasColumnType("datetime");
 
@@ -180,6 +202,8 @@ namespace WFHMicrositeAPIs.Models
 
             modelBuilder.Entity<UserSelection>(entity =>
             {
+                entity.ToTable("UserSelection");
+
                 entity.Property(e => e.UserSelectionId).HasColumnName("UserSelectionID");
 
                 entity.Property(e => e.ProductOptionId).HasColumnName("ProductOptionID");

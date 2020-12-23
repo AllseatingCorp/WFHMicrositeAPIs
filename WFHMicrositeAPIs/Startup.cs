@@ -47,6 +47,8 @@ namespace WFHMicrositeAPIs
             {
                 endpoints.MapControllers();
             });
+
+            IronPdf.License.LicenseKey = "IRONPDF-1475222546-122330-C3D69E-A520321288-9A0CCF28-UEx825A9BFE34B89D8-ALLSEATINGCORPORATION.IRO201008.3820.11146.ORG.5DEV.1YR.SUPPORTED.UNTIL.09.OCT.2021";
         }
     }
 }
