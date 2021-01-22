@@ -17,6 +17,7 @@ namespace WFHMicrositeAPIs.Models
         {
         }
 
+        public virtual DbSet<AlternatePonumber> AlternatePonumbers { get; set; }
         public virtual DbSet<MasterPostalZipP2> MasterPostalZipP2s { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductImage> ProductImages { get; set; }
@@ -29,6 +30,21 @@ namespace WFHMicrositeAPIs.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<AlternatePonumber>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("AlternatePONumbers");
+
+                entity.Property(e => e.AlternatePonumber1)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .HasColumnName("AlternatePONumber")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+            });
 
             modelBuilder.Entity<MasterPostalZipP2>(entity =>
             {
@@ -159,6 +175,8 @@ namespace WFHMicrositeAPIs.Models
                 entity.Property(e => e.Shipped).HasColumnType("datetime");
 
                 entity.Property(e => e.SpecialInstructions).HasMaxLength(1000);
+
+                entity.Property(e => e.Submitted).HasColumnType("datetime");
 
                 entity.Property(e => e.TrackingNumber).HasMaxLength(50);
             });

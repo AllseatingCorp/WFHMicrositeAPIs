@@ -48,7 +48,6 @@ namespace WFHMicrositeAPIs.Controllers
                     break;
                 case 5:
                     emessage = await OrderEmail(user);
-                    emailid = 0;
                     break;
             }
             if (emessage != null)
@@ -58,6 +57,12 @@ namespace WFHMicrositeAPIs.Controllers
                     SmtpMail.UseDefaultCredentials = true;
                     SmtpMail.Send(emessage);
                     emessage.Dispose();
+                    if (emailid == 5)
+                    {
+                        user.Submitted = DateTime.Now;
+                        _context.Entry(user).State = EntityState.Modified;
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 if (emailid == 4)
                 {
@@ -139,7 +144,12 @@ namespace WFHMicrositeAPIs.Controllers
             string emailAddress = _configuration.GetValue<string>("AppSettings:AllInEmail");
             Product product = await _context.Products.Where(x => x.ProductId == user.ProductId).FirstOrDefaultAsync();
             List<UserSelection> userSelections = await _context.UserSelections.Where(x => x.UserId == user.UserId).ToListAsync();
-            string poNumber = product.DealerCode + "_" + user.UserId.ToString();
+            string poNumber = product.Ponumber + "-" + user.UserId.ToString();
+            string altPo = await _context.AlternatePonumbers.Where(x => x.UserId == user.UserId).Select(y => y.AlternatePonumber1).FirstOrDefaultAsync();
+            if (!string.IsNullOrWhiteSpace(altPo))
+            {
+                poNumber = altPo.Trim() + "-" + user.UserId.ToString();
+            }
             string subject = "WFH Order " + user.UserId.ToString();
             string body = "The sif file for the order is attached.";
 
@@ -206,7 +216,7 @@ namespace WFHMicrositeAPIs.Controllers
                     option = await _context.ProductOptions.Where(x => x.ProductOptionId == item.ProductOptionId).FirstOrDefaultAsync();
                     if (!string.IsNullOrEmpty(option.StockCode))
                     {
-                        options += "<tr><td style=\"width: 30%; font-size:small; font-weight: bold;\"><label>" + option.Type + "</label></td><td style=\"width: 70%; font-size:small;\"><label>" + option.Name + "</label></td></tr>";
+                        options += "<tr><td style=\"width: 30%; font-size:small; font-weight: bold;\"><label>" + option.Type + "</label></td><td style=\"width: 35%; font-size:small;\"><label>" + option.Name + "</label></td><td style=\"width: 35%; font-size:small;\"><label>" + option.StockCode + "</label></td></tr>";
                     }
                 }
                 string[] parameters = new string[]
@@ -233,10 +243,10 @@ namespace WFHMicrositeAPIs.Controllers
                 try
                 {
                     html = string.Format(html, parameters);
+                    var pdf = htmlToPdf.RenderHtmlAsPdf(html);
+                    pdf.SaveAs(fileName);
                 }
-                catch (Exception ex) { string s = ex.Message; }
-                var pdf = htmlToPdf.RenderHtmlAsPdf(html);
-                pdf.SaveAs(fileName);
+                catch { }
             }
             if (System.IO.File.Exists(fileName))
             {
