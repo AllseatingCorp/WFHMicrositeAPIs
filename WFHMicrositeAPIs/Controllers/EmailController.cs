@@ -111,7 +111,10 @@ namespace WFHMicrositeAPIs.Controllers
                         break;
                 }
             }
-            string url = _configuration.GetValue<string>("AppSettings:CompleteUrl") + user.UserId;
+            user.SessionId = Guid.NewGuid().ToString().Replace("-", "");
+            string url = _configuration.GetValue<string>("AppSettings:CompleteUrl") + user.SessionId;
+            _context.Update(user);
+            await _context.SaveChangesAsync();
             string body = "Your address and selections have been saved.<br/><br/><a href='" + url + ">Click here</a> to review your selections.";
             string file = _env.WebRootPath + "\\emails\\email" + emailid.ToString() + "_" + user.Language + ".txt";
             StreamReader sr = new StreamReader(file, System.Text.Encoding.UTF8);
@@ -253,6 +256,21 @@ namespace WFHMicrositeAPIs.Controllers
                 emessage.Attachments.Add(new Attachment(fileName));
             }
             return emessage;
+        }
+
+        private string GetRandomNumber()
+        {
+            string number = "";
+            do
+            {
+                number = new Random().Next(100000000, 999999999).ToString();
+                if (_context.Users.Where(x => x.SessionId == number).FirstOrDefault() != null)
+                {
+                    number = "";
+                }
+            } while (number == "");
+
+            return number;
         }
     }
 }

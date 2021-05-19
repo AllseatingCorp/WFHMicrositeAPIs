@@ -41,6 +41,20 @@ namespace MicrositeAPIs.Controllers
             return user;
         }
 
+        // GET: api/Users/5
+        [HttpGet("S/{id}")]
+        public async Task<ActionResult<User>> GetUser(string id)
+        {
+            var user = await _context.Users.Where(x => x.SessionId == id).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
+        }
+
         // PUT: api/Users/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

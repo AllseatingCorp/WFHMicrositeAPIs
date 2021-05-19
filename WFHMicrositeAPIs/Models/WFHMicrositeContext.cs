@@ -172,6 +172,10 @@ namespace WFHMicrositeAPIs.Models
 
                 entity.Property(e => e.ProvinceState).HasMaxLength(50);
 
+                entity.Property(e => e.SessionId)
+                    .HasMaxLength(200)
+                    .HasColumnName("SessionID");
+
                 entity.Property(e => e.Shipped).HasColumnType("datetime");
 
                 entity.Property(e => e.SpecialInstructions).HasMaxLength(1000);
