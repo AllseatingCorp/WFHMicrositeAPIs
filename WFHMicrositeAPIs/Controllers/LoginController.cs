@@ -23,8 +23,9 @@ namespace MicrositeAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<LoginData>> LoginUser(LoginData data)
         {
+            var product = await _context.Products.Where(x => x.ProductId == data.ProductId).FirstOrDefaultAsync();
             var user = await _context.Users.Where(x => x.ProductId == data.ProductId && x.EmailAddress == data.EmailAddress && x.Pin == data.PIN).FirstOrDefaultAsync();
-            if (user == null)
+            if (user == null || product.Completed)
             {
                 return NotFound();
             }
